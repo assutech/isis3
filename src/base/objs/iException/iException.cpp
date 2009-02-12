@@ -38,16 +38,21 @@ namespace Isis {
    * Constructs a blank iException. Checks if file and line number should be
    * output, and whether the exception should be reported in PVL format.
    */
-  iException::iException () {
-    // See if we should output the file and line number  
-    Isis::PvlGroup &ef = Isis::Preference::Preferences().FindGroup("ErrorFacility");
-    Isis::iString fileline = (std::string) ef["FileLine"];
-    p_reportFileLine = (fileline.UpCase() == "ON");
+  iException::iException () : p_reportFileLine(false), p_pvlFormat(false) {
 
-    // Should we report in pvl format??
-    p_pvlFormat = false;
-    Isis::iString pvlForm = (std::string) ef["Format"];
-    p_pvlFormat = (pvlForm.UpCase() == "PVL");
+    // See if we should output the file and line number
+    PvlObject::ConstPvlGroupIterator ef = Isis::Preference::Preferences().FindGroupSafe("ErrorFacility");
+    if (ef != Isis::Preference::Preferences().EndGroup()) {
+      Isis::iString fileline = (std::string) (*ef)["FileLine"];
+      p_reportFileLine = (fileline.UpCase() == "ON");
+
+      // Should we report in pvl format??
+      Isis::iString pvlForm = (std::string) (*ef)["Format"];
+      p_pvlFormat = (pvlForm.UpCase() == "PVL");
+    } else {
+      std::cerr << "Did not find preference file (from iException::iException())" << std::endl;
+    }
+
     atexit(Shutdown);
   }
 
@@ -71,11 +76,15 @@ namespace Isis {
       p_exception = new iException();
     }
 
-    PvlGroup &errPref = Preference::Preferences().FindGroup("ErrorFacility");
+    PvlObject::ConstPvlGroupIterator errPref = Isis::Preference::Preferences().FindGroupSafe("ErrorFacility");
     bool printTrace = false;
 
-    if (errPref.HasKeyword("StackTrace")) {
-      printTrace = (((iString)errPref["StackTrace"][0]).UpCase() == "ON");
+    if (errPref != Isis::Preference::Preferences().EndGroup()) {
+        if ((*errPref).HasKeyword("StackTrace")) {
+          printTrace = (((iString)(*errPref)["StackTrace"][0]).UpCase() == "ON");
+        }
+    } else {
+      std::cerr << "Did not find preference file (from iException::Message())" << std::endl;
     }
 
     if (printTrace && p_list.empty()) {

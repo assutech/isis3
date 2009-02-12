@@ -118,7 +118,7 @@ namespace Isis {
                                  PvlGroupIterator beg,
                                  PvlGroupIterator end) {
         Isis::PvlGroup temp(name);
-        return find(beg,end,temp);
+        return std::find(beg,end,temp);
       }
 
 
@@ -132,7 +132,7 @@ namespace Isis {
                                  ConstPvlGroupIterator beg,
                                  ConstPvlGroupIterator end) const {
         Isis::PvlGroup temp(name);
-        return find(beg,end,temp);
+        return std::find(beg,end,temp);
       }
 
 
@@ -167,6 +167,10 @@ namespace Isis {
 
       const Isis::PvlGroup &FindGroup(const std::string &name, 
                               FindOptions opts = None) const;
+
+      ConstPvlGroupIterator FindGroupSafe(const std::string &name,
+                              FindOptions opts = None) const;
+
       /**
        * Add a group to the object.
        * @param group The PvlGroup object to add.
@@ -249,7 +253,7 @@ namespace Isis {
                                        PvlObjectIterator beg,
                                        PvlObjectIterator end) {
         PvlObject temp(name);
-        return find(beg,end,temp);
+        return std::find(beg,end,temp);
       }
 
 
@@ -264,7 +268,7 @@ namespace Isis {
                                        ConstPvlObjectIterator beg,
                                        ConstPvlObjectIterator end) const {
         PvlObject temp(name);
-        return find(beg,end,temp);
+        return std::find(beg,end,temp);
       }
 
 
