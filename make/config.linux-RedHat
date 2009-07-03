@@ -1,53 +1,4 @@
 #---------------------------------------------------------------------------
-# Compiler options
-#---------------------------------------------------------------------------
-CXX           = g++
-CC            = gcc
-ISISCPPFLAGS  = -Wall
-ISISCPPFLAGS += -ansi
-ISISCPPFLAGS += -DISIS_LITTLE_ENDIAN=1
-ISISCPPFLAGS += -fPIC
-ISISCPPFLAGS += -DGMM_USES_SUPERLU
-
-ifeq ($(findstring DEBUG, $(MODE)),DEBUG)
-  ISISCPPFLAGS += -g 
-  ISISCPPFLAGS += -O0
-  ISISCPPFLAGS += -DCWDEBUG -DLIBCWD_THREAD_SAFE -D_REENTRANT
-
-  ifeq ($(findstring NOMEMCHECK, $(MODE)),NOMEMCHECK)
-    ISISCPPFLAGS += -DNOMEMCHECK
-  endif
-else
-  ISISCPPFLAGS += -O1
-endif
-
-ISISCFLAGS = 
-
-#---------------------------------------------------------------------------
-# Linker options
-#---------------------------------------------------------------------------
-RANLIB          = /bin/true
-SHAREDLIBEXT    = so
-
-ISISLDFLAGS  = -Wl,-E -Xlinker '-z' -Xlinker 'origin'
-ISISLDFLAGS += -Xlinker "-rpath" -Xlinker "${ISISROOT}/lib:${ISISROOT}/3rdParty/lib"
-ISISSYSLIBS = 
-ISISSTATIC  = -Wl,-Bstatic
-ISISDYNAMIC = -Wl,-Bdynamic
-
-ifeq ($(findstring DEBUG, $(MODE)),DEBUG)
-  ISISSYSLIBS += -lcwd_r -pthread
-endif
-
-#---------------------------------------------------------------------------
-# Shared library options
-#---------------------------------------------------------------------------
-ISISSHAREDFLAGS = $(ISISLDFLAGS) -shared 
-ISISSHAREDON    = -Wl,-whole-archive
-ISISSHAREDOFF   = -Wl,-no-whole-archive
-ISISARFLAGS     =
-
-#---------------------------------------------------------------------------
 # Set up local library designations
 #---------------------------------------------------------------------------
 ISIS3SYSINC ?= /usr/include
@@ -59,7 +10,7 @@ ISIS3LOCAL  ?= /usgs/pkgs/local/isis$(ISISVERSION)
 #---------------------------------------------------------------------------
 CWDINCDIR = -I$(ISIS3LOCAL)/include/libcwd
 CWDLIBDIR = -L$(ISIS3LOCAL)/lib
-CWDLIB    = -lcwd_r
+CWDLIB    = -lcwd_r -pthread
 
 #---------------------------------------------------------------------------
 # Set up for Qt
