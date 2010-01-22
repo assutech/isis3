@@ -36,7 +36,13 @@
 #include "geos/geom/Polygon.h"
 #include "geos/operation/distance/DistanceOp.h"
 #include "geos/opOverlay.h"
-#include "geos/operation/overlay/snap/GeometrySnapper.h"
+
+#include "geos/version.h"
+#if GEOS_VERSION_MAJOR >= 3 && GEOS_VERSION_MINOR >= 2
+#  include "geos/operation/overlay/snap/GeometrySnapper.h"
+#else
+#  include "geos/precision/GeometrySnapper.h"
+#endif
 
 #include "SpecialPixel.h"
 #include "PolygonTools.h"
@@ -925,7 +931,12 @@ namespace Isis {
     geos::geom::Geometry *geomFirst  = MakeMultiPolygon(geom1);
     geos::geom::Geometry *geomSecond = MakeMultiPolygon(geom2);
 
+#if GEOS_VERSION_MAJOR >= 3 && GEOS_VERSION_MINOR >= 2
     geos::operation::overlay::snap::GeometrySnapper snap(*geomFirst);
+#else
+    geos::precision::GeometrySnapper snap(*geomFirst);
+#endif
+
     geos::geom::Geometry *geomSnapped = snap.snapTo(*geomSecond, 1.0e-10)->clone();
     if(!geomSnapped->isValid()) {
       delete geomSnapped;
