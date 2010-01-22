@@ -3,7 +3,7 @@
 
 #include "Affine.h"
 #include "Preference.h"
-#include "tnt/tnt_array2d_utils.h"
+#include "tnt_array2d_utils.h"
 
 using namespace std;
 using namespace TNT;

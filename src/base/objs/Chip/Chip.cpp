@@ -35,7 +35,7 @@
 #include "Statistics.h"
 #include "PolygonTools.h"
 #include "geos/geom/Point.h"
-#include "tnt/tnt_array2d_utils.h"
+#include "tnt_array2d_utils.h"
 
 namespace Isis {
 
