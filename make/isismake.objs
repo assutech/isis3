@@ -141,10 +141,6 @@ clean:  localclean
 	-$(RM) -rf html
 
 localclean:
-	if [ "$(findstring cleanlocal,$(shell grep cleanlocal Makefile))" = "cleanlocal" ]; \
-	then \
-	   $(MAKE) cleanlocal; \
-	fi
 
 clean_protos:
 	-$(RM) $(PROTOSGEN)

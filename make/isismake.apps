@@ -46,10 +46,6 @@ clean:  localclean
 	fi
 
 localclean:
-	if [ "$(findstring cleanlocal,$(shell grep cleanlocal Makefile))" = "cleanlocal" ]; \
-	then \
-	   $(MAKE) cleanlocal; \
-	fi
 
 sanitize: clean
 	-$(RM) tttt* junk.* TEMP*
