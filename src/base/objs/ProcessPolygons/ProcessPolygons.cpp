@@ -12,7 +12,13 @@
 #include "geos/geom/Geometry.h"
 #include "geos/geom/Point.h"
 #include "geos/util/IllegalArgumentException.h"
-#include "geos/operation/overlay/snap/GeometrySnapper.h"
+
+#include "geos/version.h"
+#if GEOS_VERSION_MAJOR >= 3 && GEOS_VERSION_MINOR >= 2
+#  include "geos/operation/overlay/snap/GeometrySnapper.h"
+#else
+#  include "geos/precision/GeometrySnapper.h"
+#endif
 
 using namespace std;
 namespace Isis {
@@ -216,7 +222,11 @@ namespace Isis {
       geos::geom::Polygon *intersectPoly = ((geos::geom::Polygon*)p_imagePoly->intersection(poly));   
       const geos::geom::Envelope *envelope = intersectPoly->getEnvelopeInternal();
 
+#if GEOS_VERSION_MAJOR >= 3 && GEOS_VERSION_MINOR >= 2
       geos::operation::overlay::snap::GeometrySnapper snap(*intersectPoly);
+#else
+      geos::precision::GeometrySnapper snap(*intersectPoly);
+#endif
 
       /*go thru each coord. in the envelope and ask if it is within the polygon*/
       for (double x = floor(envelope->getMinX()); x <= ceil(envelope->getMaxX()); x++) {
