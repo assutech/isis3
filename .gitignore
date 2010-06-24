@@ -1,0 +1,8 @@
+*.[oa]
+moc_*
+inc
+3rdParty
+*.so
+apps
+bin
+lib
