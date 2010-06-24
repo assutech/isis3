@@ -1,0 +1,114 @@
+#---------------------------------------------------------------------------
+# Set up for cwd
+#---------------------------------------------------------------------------
+CWDINCDIR = -I$(IRGPKG_DIR)/libcwd/include/libcwd
+CWDLIBDIR = -L$(IRGPKG_DIR)/libcwd/lib
+CWDLIB    = -lcwd_r -pthread
+
+#---------------------------------------------------------------------------
+# Set up for Qt
+#---------------------------------------------------------------------------
+QT_PKGS  := QtCore QtGui QtNetwork QtSql
+QTINCDIR  = -I$(IRGPKG_DIR)/qt/include -I$(IRGPKG_DIR)/qt/include/Qt
+QTINCDIR += $(foreach pkg,$(QT_PKGS),-I$(IRGPKG_DIR)/qt/include/$(pkg) )
+QTLIBDIR  = -L$(IRGPKG_DIR)/qt/lib
+QTLIB     = $(foreach pkg,$(QT_PKGS),-l$(pkg) )
+
+UIC      = $(IRGPKG_DIR)/qt/bin/uic
+MOC      = $(IRGPKG_DIR)/qt/bin/moc
+RCC      = $(IRGPKG_DIR)/qt/bin/rcc
+
+#---------------------------------------------------------------------------
+# Set up for Qwt
+#---------------------------------------------------------------------------
+QWTINCDIR = -I$(IRGPKG_DIR)/qwt/include
+QWTLIBDIR = -L$(IRGPKG_DIR)/qwt/lib
+QWTLIB    = -lqwt 
+
+#---------------------------------------------------------------------------
+# Set up for Xerces 
+#---------------------------------------------------------------------------
+XERCESINCDIR = -I$(IRGPKG_DIR)/xerces-c/include
+XERCESLIBDIR = -L$(IRGPKG_DIR)/xerces-c/lib
+XERCESLIB    = -lxerces-c
+
+#---------------------------------------------------------------------------
+# Set up for naif
+#---------------------------------------------------------------------------
+NAIFINCDIR = -I$(IRGPKG_DIR)/cspice/include
+NAIFLIBDIR = -L$(IRGPKG_DIR)/cspice/lib
+NAIFLIB    = -lcspice
+
+#---------------------------------------------------------------------------
+# Set up for TNT
+#---------------------------------------------------------------------------
+TNTINCDIR = -I$(IRGPKG_DIR)/tnt/include
+TNTLIBDIR =
+TNTLIB    = 
+
+#---------------------------------------------------------------------------
+# Set up for JAMA
+#---------------------------------------------------------------------------
+JAMAINCDIR = -I$(IRGPKG_DIR)/jama/include
+JAMALIBDIR =
+JAMALIB    = 
+
+#---------------------------------------------------------------------------
+# Set up for GEOS
+#---------------------------------------------------------------------------
+GEOSINCDIR = -I$(IRGPKG_DIR)/geos/include
+GEOSLIBDIR = -L$(IRGPKG_DIR)/geos/lib
+GEOSLIB    = -lgeos
+
+#---------------------------------------------------------------------------
+# Set up for the GNU Scientific Library (GSL).  Note that this setup
+# suppports include patterns such as <gsl/gsl_errno.h>.  With this
+# format, any other include spec that points to the general include
+# directory, such as GEOS, will suffice.  Therefore, an explicit
+# include directive is ommitted but provided as an empty reference
+# in cases where it may be located elsewhere.  This also goes for the
+# library reference.
+#---------------------------------------------------------------------------
+GSLINCDIR = -I$(IRGPKG_DIR)/gsl/include
+GSLLIBDIR = -L$(IRGPKG_DIR)/gsl/lib
+GSLLIB    = -lgsl -lgslcblas
+
+#---------------------------------------------------------------------------
+# Set up for GMM
+#---------------------------------------------------------------------------
+GMMINCDIR = -I$(IRGPKG_DIR)/gmm/include
+GMMLIBDIR = 
+GMMLIB    = 
+
+#---------------------------------------------------------------------------
+# Set up for SuperLU
+#---------------------------------------------------------------------------
+SUPERLUINCDIR = -I$(IRGPKG_DIR)/superlu/include
+SUPERLULIBDIR = -L$(IRGPKG_DIR)/superlu/lib
+SUPERLULIB    = -lsuperlu -lblas
+
+#---------------------------------------------------------------------------
+# Set up for Google Protocol Buffers (ProtoBuf)
+#---------------------------------------------------------------------------
+PROTOBUFINCDIR = -I$(IRGPKG_DIR)/protobuf/include
+PROTOBUFLIBDIR = -L$(IRGPKG_DIR)/protobuf/lib
+PROTOBUFLIB    = -lprotobuf
+
+#---------------------------------------------------------------------------
+# Set up for kakadu
+# The Kakadu library is proprietary. The source files cannot be distributed
+# with ISIS3. If you need to rebuild ISIS3 on your system, then you will
+# need to modify the lines below that pertain to the location of the
+# header files and library on your system. The compilation flag, ENABLEJP2K,
+# should be set to true if you are building with the Kakadu library and
+# you want to use the JPEG2000 specific code in the ISIS3 system. Otherwise,
+# set the ENABLEJP2K flag to false.
+#---------------------------------------------------------------------------
+ISISCPPFLAGS += -DENABLEJP2K=0
+
+#---------------------------------------------------------------------------
+# Set up for BOOST
+#---------------------------------------------------------------------------
+BOOSTINCDIR = -I$(IRGPKG_DIR)/boost/include
+BOOSTLIBDIR = 
+BOOSTLIB    = 

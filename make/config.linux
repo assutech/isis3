@@ -70,18 +70,22 @@ ifeq ($(HOST_ARCH),Linux)
   ifneq ("$(wildcard /etc/gentoo-release)","")
     include $(ISISROOT)/make/config.linux-Gentoo
   else
-    ifeq ($(HOST_MACH),x86_64)
-      REDHAT = $(wildcard /etc/redhat-release)
-      ifeq ($(REDHAT),/etc/redhat-release)
-       include $(ISISROOT)/make/config.linux-RedHat
-      else
-        include $(ISISROOT)/make/config.linux-x86_64
-      endif
+    ifneq ($(strip $(IRGPKG_DIR)),)
+      include $(ISISROOT)/make/config.linux-irg
     else
-      ifneq ($(VERSION),9)
-        include $(ISISROOT)/make/config.linux-x86_32
+      ifeq ($(HOST_MACH),x86_64)
+        REDHAT = $(wildcard /etc/redhat-release)
+        ifeq ($(REDHAT),/etc/redhat-release)
+         include $(ISISROOT)/make/config.linux-RedHat
+        else
+          include $(ISISROOT)/make/config.linux-x86_64
+        endif
       else
-        include $(ISISROOT)/make/config.linux-Suse9
+        ifneq ($(VERSION),9)
+          include $(ISISROOT)/make/config.linux-x86_32
+        else
+          include $(ISISROOT)/make/config.linux-Suse9
+        endif
       endif
     endif
   endif
